@@ -37,6 +37,9 @@ $control.setTemplate("home:navigation.vm")
   <th>权重：</th><td>$!dataMediaPair.pushWeight</td>
   </tr>
   <tr>
+  <th>是否初始化：</th><td>#if($!dataMediaPair.useInitialize) 开启 #else 关闭 #end</td>
+  </tr>
+  <tr>
   <th>视图模式：</th><td>$!dataMediaPair.columnPairMode</td>
   </tr>
   <tr>

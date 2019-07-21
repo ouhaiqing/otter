@@ -77,4 +77,9 @@ public class IbatisTableStatDAO extends SqlMapClientDaoSupport implements TableS
         return (List<TableStatDO>) getSqlMapClientTemplate().queryForList("listTimelineTableStat", condition);
     }
 
+    @Override
+    public int updateTableStat(TableStatDO tableStat) {
+        return (getSqlMapClientTemplate().update("updateTableStat", tableStat));
+    }
+
 }

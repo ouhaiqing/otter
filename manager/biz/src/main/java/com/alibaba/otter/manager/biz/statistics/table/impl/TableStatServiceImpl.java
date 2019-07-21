@@ -261,6 +261,39 @@ public class TableStatServiceImpl implements TableStatService, InitializingBean 
 
     }
 
+    @Override
+    public void renewTableStat(TableStat stat) {
+        Assert.assertNotNull(stat);
+        tableStatDao.updateTableStat(tableStatModelToDo(stat));
+
+        if (stat.getStartTime() != null && stat.getEndTime() != null) {
+            if (statUnit <= 0) {
+                insertBehaviorHistory(stat);
+            } else {
+                synchronized (tableStats) {
+                    // 插入历史数据表
+                    TableStat old = tableStats.get(stat.getDataMediaPairId());
+                    if (old != null) {
+                        //合并数据
+                        old.setInsertCount(stat.getInsertCount() + old.getInsertCount());
+                        old.setUpdateCount(stat.getUpdateCount() + old.getUpdateCount());
+                        old.setDeleteCount(stat.getDeleteCount() + old.getDeleteCount());
+                        old.setFileCount(stat.getFileCount() + old.getFileCount());
+                        old.setFileSize(stat.getFileSize() + old.getFileSize());
+                        if (stat.getEndTime().after(old.getEndTime())) {
+                            old.setEndTime(stat.getEndTime());
+                        }
+                        if (stat.getStartTime().before(old.getStartTime())) {
+                            old.setStartTime(stat.getStartTime());
+                        }
+                    } else {
+                        tableStats.put(stat.getDataMediaPairId(), stat);
+                    }
+                }
+            }
+        }
+    }
+
     public void setTableStatDao(TableStatDAO tableStatDao) {
         this.tableStatDao = tableStatDao;
     }

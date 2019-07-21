@@ -3,7 +3,7 @@
 	
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
-			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%X{requestURIWithQueryString}] %-5level %logger{56} - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%p]-[%t]-[%C %M %L]-%m%n</pattern>
 		</encoder>
 	</appender>
 	<appender name="WEBX-ROOT" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -140,7 +140,10 @@
         <appender-ref ref="WEBX-ROOT" />
     </logger>
     
-	<root level="WARN">
-		<appender-ref ref="WEBX-ROOT" />
-	</root>
+
+    <root level="info">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="WEBX-ROOT" />
+        <appender-ref ref="ERROR_LOG" />
+    </root>
 </configuration>

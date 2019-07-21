@@ -47,4 +47,10 @@ public interface TableStatService {
      * 查询对应的报表数据
      */
     public Map<Long, BehaviorHistoryInfo> listTimelineBehaviorHistory(TimelineBehaviorHistoryCondition condition);
+
+    /**
+     * 重新设置对应的Table统计状态
+     * @param stat
+     */
+    void renewTableStat(TableStat stat);
 }

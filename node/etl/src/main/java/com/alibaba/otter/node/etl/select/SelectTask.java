@@ -25,6 +25,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.LockSupport;
 
+import com.alibaba.otter.node.etl.common.db.utils.SyncUtils;
+import com.alibaba.otter.shared.common.model.config.data.DataMediaPair;
+import com.alibaba.otter.shared.common.model.config.pipeline.Pipeline;
 import org.slf4j.MDC;
 import org.springframework.util.CollectionUtils;
 
@@ -110,6 +113,10 @@ public class SelectTask extends GlobalTask {
         super(pipelineId);
     }
 
+    public SelectTask(Pipeline pipeline){
+        super(pipeline);
+    }
+
     public void run() {
         MDC.put(OtterConstants.splitPipelineLogFileKey, String.valueOf(pipelineId));
         try {
@@ -162,6 +169,24 @@ public class SelectTask extends GlobalTask {
             }
             arbitrateEventService.mainStemEvent().release(pipelineId);
             return;
+        }
+
+
+        // 全量数据同步
+        List<DataMediaPair> pairs = pipeline.getPairs();
+        for (DataMediaPair pair : pairs) {
+            if (pair.getUseInitialize() != null && pair.getUseInitialize().booleanValue()) {
+                if (pair.getEndInitialize() == null || !pair.getEndInitialize().booleanValue()) {
+
+                    //同步进行， 异步可能会造成数据库抽取数据压力过大， 从而失败
+                    SyncUtils.fullSyncData();
+                    /*if (pair.getTarget().getSource().getType().isIMPALA()) {
+                        HiveSyncUtils.fullSyncImpalaData(pair, databaseExtractor, shellTaskService, configClientService);
+                    } else {
+                        HiveSyncUtils.fullSyncData(pair, databaseExtractor, dbLoadAction, configClientService);
+                    }*/
+                }
+            }
         }
 
         executor = Executors.newFixedThreadPool(2); // 启动两个线程

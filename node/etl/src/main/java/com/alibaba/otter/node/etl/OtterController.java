@@ -180,9 +180,12 @@ public class OtterController implements NodeTaskListener, OtterControllerMBean {
             logger.warn("WARN ## this task = {} has started", taskType);
         }
 
+
         GlobalTask task = null;
         if (taskType.isSelect()) {
-            task = new SelectTask(pipeline.getId());
+            //task = new SelectTask(pipeline.getId());
+            //在任务开始之前实现初始化逻辑需要绑定pipeline
+            task = new SelectTask(pipeline);
         } else if (taskType.isExtract()) {
             task = new ExtractTask(pipeline.getId());
         } else if (taskType.isTransform()) {

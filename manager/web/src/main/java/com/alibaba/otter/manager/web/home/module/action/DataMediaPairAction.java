@@ -21,6 +21,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.alibaba.otter.manager.biz.statistics.table.TableStatService;
+import com.alibaba.otter.shared.common.model.statistics.table.TableStat;
 import org.apache.commons.lang.StringUtils;
 
 import com.alibaba.citrus.service.form.CustomErrors;
@@ -57,6 +59,9 @@ public class DataMediaPairAction {
 
     @Resource(name = "channelService")
     private ChannelService         channelService;
+
+    @Resource(name = "tableStatService")
+    private TableStatService tableStatService;
 
     /**
      * 添加DataMediaPair
@@ -220,6 +225,19 @@ public class DataMediaPairAction {
         dataMediaPair.setTarget(targetDataMedia);
         try {
             dataMediaPairService.modify(dataMediaPair);
+
+            //判断是否重新初始化
+            if (dataMediaPair.getUseInitialize() && !dataMediaPair.getEndInitialize()) {
+                TableStat tableStat = new TableStat();
+                tableStat.setFileSize(0L);
+                tableStat.setFileCount(0L);
+                tableStat.setDeleteCount(0L);
+                tableStat.setUpdateCount(0L);
+                tableStat.setInsertCount(0L);
+                tableStat.setPipelineId(dataMediaPair.getPipelineId());
+                tableStat.setDataMediaPairId(dataMediaPair.getId());
+                tableStatService.renewTableStat(tableStat);
+            }
 
         } catch (RepeatConfigureException rce) {
             err.setMessage("invalidDataMediaPair");

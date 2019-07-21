@@ -39,6 +39,11 @@ public class DataMediaPairDO implements Serializable {
     private Date              gmtCreate;
     private Date              gmtModified;
 
+    private Boolean			  useInitialize = false;							// 是否初始化
+    private Boolean			  endInitialize = false;							// 初始化是否结束
+    private String 			  posInitialize = null;							    // 初始化位置
+
+
     public Long getId() {
         return id;
     }
@@ -125,6 +130,30 @@ public class DataMediaPairDO implements Serializable {
 
     public void setColumnPairMode(ColumnPairMode columnPairMode) {
         this.columnPairMode = columnPairMode;
+    }
+
+    public Boolean getUseInitialize() {
+        return useInitialize;
+    }
+
+    public void setUseInitialize(Boolean useInitialize) {
+        this.useInitialize = useInitialize;
+    }
+
+    public Boolean getEndInitialize() {
+        return endInitialize;
+    }
+
+    public void setEndInitialize(Boolean endInitialize) {
+        this.endInitialize = endInitialize;
+    }
+
+    public String getPosInitialize() {
+        return posInitialize;
+    }
+
+    public void setPosInitialize(String posInitialize) {
+        this.posInitialize = posInitialize;
     }
 
 }

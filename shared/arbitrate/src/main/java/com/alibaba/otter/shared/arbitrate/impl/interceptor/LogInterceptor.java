@@ -87,8 +87,8 @@ public class LogInterceptor implements MethodInterceptor {
             String resultStr = getResultString(result);
 
             String now = new SimpleDateFormat(DATA_FORMAT).format(new Date());
-            log.info(MessageFormat.format(MESSAGE, new Object[] { className, methodName, now, take, buffer.toString(),
-                    resultStr }));
+            /*log.info(MessageFormat.format(MESSAGE, new Object[] { className, methodName, now, take, buffer.toString(),
+                    resultStr }));*/
         }
     }
 

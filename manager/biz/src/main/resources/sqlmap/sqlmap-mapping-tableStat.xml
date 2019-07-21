@@ -88,5 +88,17 @@
 	<delete id="deleteTableStatById" parameterClass="long"><![CDATA[
     	delete from TABLE_STAT where ID = #value#
     ]]></delete>
+
+	<update id="updateTableStat" parameterClass="tableStat"><![CDATA[
+		update TABLE_STAT
+		set
+		FILE_SIZE=#fileSize#,
+		FILE_COUNT=#fileCount#,
+		DELETE_COUNT=#deleteCount#,
+		UPDATE_COUNT=#updateCount#,
+		INSERT_COUNT=#insertCount#,
+		GMT_MODIFIED=now()
+		WHERE PIPELINE_ID=#pipelineId# and DATA_MEDIA_PAIR_ID=#dataMediaPairId#
+	]]></update>
     
 </sqlMap>  

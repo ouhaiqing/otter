@@ -47,6 +47,10 @@ public class DataMediaPair implements Serializable {
     private Date              gmtCreate;
     private Date              gmtModified;
 
+    private Boolean			  useInitialize = false;							// 是否初始化
+    private Boolean			  endInitialize = false;							// 初始化是否结束
+    private String 			  posInitialize = null;							// 初始化位置
+
     public Long getId() {
         return id;
     }
@@ -162,5 +166,30 @@ public class DataMediaPair implements Serializable {
     public String toString() {
         return ToStringBuilder.reflectionToString(this, OtterToStringStyle.DEFAULT_STYLE);
     }
+
+    public Boolean getUseInitialize() {
+        return useInitialize;
+    }
+
+    public void setUseInitialize(Boolean useInitialize) {
+        this.useInitialize = useInitialize;
+    }
+
+    public Boolean getEndInitialize() {
+        return endInitialize;
+    }
+
+    public void setEndInitialize(Boolean endInitialize) {
+        this.endInitialize = endInitialize;
+    }
+
+    public String getPosInitialize() {
+        return posInitialize;
+    }
+
+    public void setPosInitialize(String posInitialize) {
+        this.posInitialize = posInitialize;
+    }
+
 
 }

@@ -311,6 +311,10 @@ public class DataMediaPairServiceImpl implements DataMediaPairService {
             dataMediaPair.setGmtCreate(dataMediaPairDo.getGmtCreate());
             dataMediaPair.setGmtModified(dataMediaPairDo.getGmtModified());
 
+            dataMediaPair.setUseInitialize(dataMediaPairDo.getUseInitialize());
+            dataMediaPair.setEndInitialize(dataMediaPairDo.getEndInitialize());
+            dataMediaPair.setPosInitialize(dataMediaPairDo.getPosInitialize());
+
             // 组装DataMedia
             List<DataMedia> dataMedias = dataMediaService.listByIds(dataMediaPairDo.getSourceDataMediaId(),
                                                                     dataMediaPairDo.getTargetDataMediaId());
@@ -380,6 +384,10 @@ public class DataMediaPairServiceImpl implements DataMediaPairService {
             dataMediaPairDo.setColumnPairMode(dataMediaPair.getColumnPairMode());
             dataMediaPairDo.setGmtCreate(dataMediaPair.getGmtCreate());
             dataMediaPairDo.setGmtModified(dataMediaPair.getGmtModified());
+
+            dataMediaPairDo.setUseInitialize(dataMediaPair.getUseInitialize());
+            dataMediaPairDo.setEndInitialize(dataMediaPair.getEndInitialize());
+            dataMediaPairDo.setPosInitialize(dataMediaPair.getPosInitialize());
         } catch (Exception e) {
             logger.error("ERROR ## change the dataMediaPair Model to Do has an exception", e);
             throw new ManagerException(e);

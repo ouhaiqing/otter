@@ -44,7 +44,7 @@ public class OtterManagerLauncher {
             // 合并配置到system参数中
             mergeProps(properties);
 
-            logger.info("## start the manager server.");
+            logger.error("## start the manager server.");
             final JettyEmbedServer server = new JettyEmbedServer(properties.getProperty("otter.jetty", "jetty.xml"));
             server.start();
             logger.info("## the manager server is running now ......");

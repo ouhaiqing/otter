@@ -39,4 +39,6 @@ public interface TableStatDAO {
 
     public List<TableStatDO> listTableStatsByPairId(Long dataMediaPairId);
 
+    int updateTableStat(TableStatDO tableStat);
+
 }

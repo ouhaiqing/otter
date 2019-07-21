@@ -36,6 +36,7 @@ public class OtterLauncher {
         // 启动dragoon client
         // startDragoon();
         // logger.info("INFO ## the dragoon is start now ......");
+        System.setProperty("nid","1");
         final OtterController controller = OtterContextLocator.getOtterController();
         controller.start();
         try {

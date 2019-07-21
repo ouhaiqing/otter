@@ -340,7 +340,7 @@
 			</field>
 			<field name="id" displayName="dataMedia的id" />
 			<field name="pullWeight" displayName="提取权重" />
-
+			<field name="useInitialize" displayName="是否初始化" />
 			<field name="pushWeight" displayName="载入权重">
 				<fm-validators:required-validator>
 					<message>必须填写${displayName}</message>

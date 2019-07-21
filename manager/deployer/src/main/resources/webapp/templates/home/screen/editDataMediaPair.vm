@@ -68,6 +68,15 @@ function changeKeyword(id, name, local) {
 		</td>
       </tr>
 	  <tr>
+		<th>是否初始化:</th>
+		<td>
+			<input type="radio" name="$dataMediaPairGroup.useInitialize.key" value="true" id="RadioGroup2_0" #if ($dataMediaPair.useInitialize) checked="checked" #end class="radio"/>是
+			<input type="radio" name="$dataMediaPairGroup.useInitialize.key" value="false" id="RadioGroup2_1" #if (!$dataMediaPair.useInitialize) checked="checked" #end class="radio"/>否
+			<br />
+			<span class="red">#editDataMediaPairMessage ($dataMediaPairGroup.useInitialize)</span>
+		</td>
+	  </tr>
+	  <tr>
         <th>视图模式:</th>
         <td>
 		  <input type="radio" name="$dataMediaPairGroup.columnPairMode.key" value="INCLUDE" id="RadioGroup2_0" #if($!dataMediaPair.columnPairMode.isInclude()) checked="checked" #end class="radio"/>include

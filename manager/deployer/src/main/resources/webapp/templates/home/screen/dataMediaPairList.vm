@@ -48,17 +48,19 @@ $control.setTemplate("home:navigation.vm")
         
         <table border="0" cellspacing="0" cellpadding="0" class="list2 changecolor_g">
           <tr> 
-            <th width="3%">序号</th>
-            <th width="10%">源表</th>
-            <th width="10%">目标表</th>
-            <th width="5%">权重</th>
-			<th width="7%">FileSize</th>
-			<th width="7%">FileCount</th>
-			<th width="7%">DeleteCount</th>
-			<th width="7%">UpdateCount</th>
-			<th width="7%">InsertCount</th>
-            <th width="10%">最后同步时间</th>
-			<th width="16%">操作</th>
+		  	<th width="3%">序号</th>
+		  	<th width="10%">源表</th>
+		  	<th width="10%">目标表</th>
+		  	<th width="5%">权重</th>
+		  	<th width="5%">是否初始化</th>
+		  	<th width="5%">初始化完成</th>
+		  	<th width="5%">FileSize</th>
+		  	<th width="5%">FileCount</th>
+		  	<th width="7%">DeleteCount</th>
+		  	<th width="7%">UpdateCount</th>
+		  	<th width="7%">InsertCount</th>
+		  	<th width="10%">最后同步时间</th>
+		  	<th width="16%">操作</th>
             
           </tr>
 		  #foreach ($dataMediaPair in $dataMediaPairs)
@@ -67,6 +69,8 @@ $control.setTemplate("home:navigation.vm")
             <td width="8%"><a href="dataMediaInfo.htm?dataMediaId=$dataMediaPair.source.id">$!dataMediaPair.source.namespace.$!dataMediaPair.source.name</a></td>
 			<td><a href="dataMediaInfo.htm?dataMediaId=$dataMediaPair.target.id">$!dataMediaPair.target.namespace.$!dataMediaPair.target.name</a></td>
             <td>$!dataMediaPair.pushWeight</td>
+		    <td>$!dataMediaPair.useInitialize</td>
+		    <td>$!dataMediaPair.endInitialize</td>
 			<td>$!numberFormat.formatFileSize($tableStatMap.get($dataMediaPair.id).fileSize)</td>
 			<td>$!numberFormat.format($tableStatMap.get($dataMediaPair.id).fileCount)</td>
 			<td>$!numberFormat.format($tableStatMap.get($dataMediaPair.id).deleteCount)</td>
