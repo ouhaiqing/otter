@@ -231,11 +231,17 @@ $control.setTemplate("home:navigation.vm")
 										#if($channel.processEmpty)
 											#set ($startURL = $homeModule.setAction("channelAction").addQueryData("channelId", $channel.id).addQueryData("status", "start").addQueryData("pageIndex", $paginator.page).addQueryData("searchKey", $!searchKey).addQueryData("eventSubmitDoStatus", "true"))
 											<span class="ico_line">|</span><a href="javascript:if(confirm('确实恢复Channel吗?'))location='$startURL'"><img src="images/ico_edit.png" width="13" height="13" /><span class="ico_font">解挂</span></a>
+
+											#set ($skipURL = $homeModule.setAction("channelAction").addQueryData("channelId", $channel.id).addQueryData("status", "skip").addQueryData("pageIndex", $paginator.page).addQueryData("searchKey", $!searchKey).addQueryData("eventSubmitDoStatus", "true"))
+											<span class="ico_line">|</span><a href="javascript:if(confirm('确实忽略该异常吗?'))location='$skipURL'"><img src="images/ico_edit.png" width="13" height="13" /><span class="ico_font">忽略</span></a>
+
 										#else
 											<span class="ico_line">|</span><img src="images/ico_edit.png" width="13" height="13" /><span title="process里面还有同步数据，请直接停止channel" class="ico_font">解挂</span>
+											<span class="ico_line">|</span><img src="images/ico_edit.png" width="13" height="13" /><span title="process里面还有同步数据，请直接停止channel" class="ico_font">忽略</span>
 										#end
 									#else
 										<span class="ico_line">|</span><img src="images/ico_edit.png" width="13" height="13" /><span title="#if(!$sflag)S.#end #if(!$eflag)E.#end #if(!$lflag)L#end 节点未启动" class="ico_font">解挂</span>
+										<span class="ico_line">|</span><img src="images/ico_edit.png" width="13" height="13" /><span title="#if(!$sflag)S.#end #if(!$eflag)E.#end #if(!$lflag)L#end 节点未启动" class="ico_font">忽略</span>
 									#end
 								#end
 								#if($channel.status.isPause())

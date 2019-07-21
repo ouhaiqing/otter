@@ -149,7 +149,10 @@ public class ChannelAction extends AbstractAction {
 
         } else if (status.equals("stop")) {
             channelService.stopChannel(channelId);
+        } else if (status.equals("skip")) {
+            channelService.skipChannel(channelId);
         }
+
 
         if (errorType != null) {
             nav.redirectToLocation("channelList.htm?pageIndex=" + pageIndex + "&searchKey=" + urlEncode(searchKey)

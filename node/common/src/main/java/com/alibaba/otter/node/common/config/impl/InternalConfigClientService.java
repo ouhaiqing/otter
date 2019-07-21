@@ -30,4 +30,8 @@ public interface InternalConfigClientService extends ConfigClientService {
      * 创建或者更新本地service的数据
      */
     public void createOrUpdateChannel(Channel channel);
+
+    public boolean isSkip();
+
+    public void setSkip(boolean skip);
 }

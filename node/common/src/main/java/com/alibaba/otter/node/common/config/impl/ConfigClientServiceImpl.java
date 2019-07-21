@@ -57,6 +57,8 @@ public class ConfigClientServiceImpl implements InternalConfigClientService, Arb
     private Map<Long, Long>                    channelMapping;                                                     // 将pipelineId映射为channelId
     private RefreshMemoryMirror<Long, Node>    nodeCache;
 
+    private boolean skip = false;
+
     public ConfigClientServiceImpl(){
         // 注册一下事件处理
         ArbitrateConfigRegistry.regist(this);
@@ -207,6 +209,16 @@ public class ConfigClientServiceImpl implements InternalConfigClientService, Arb
 
     public void setTimeout(Long timeout) {
         this.timeout = timeout;
+    }
+
+    @Override
+    public boolean isSkip() {
+        return skip;
+    }
+
+    @Override
+    public void setSkip(boolean skip) {
+        this.skip = skip;
     }
 
 }

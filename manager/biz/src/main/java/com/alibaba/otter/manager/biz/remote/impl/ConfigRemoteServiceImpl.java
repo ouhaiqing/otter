@@ -107,7 +107,7 @@ public class ConfigRemoteServiceImpl implements ConfigRemoteService {
         }
 
         List<String> addrsList = new ArrayList<String>(addrsSet);
-        if (CollectionUtils.isEmpty(addrsList) && channel.getStatus().isStart()) {
+        if (CollectionUtils.isEmpty(addrsList) && (channel.getStatus().isStart() || channel.getStatus().isSkip())) {
             throw new ManagerException("no live node for notifyChannel");
         } else if (CollectionUtils.isEmpty(addrsList)) {
             // 针对关闭操作，可直接处理

@@ -440,7 +440,7 @@ public class ChannelServiceImpl implements ChannelService {
 
                     if (result) {
                         // 针对启动的话，需要先通知到客户端，客户端启动线程后，再更改channel状态
-                        if (newStatus.isStart()) {
+                        if (newStatus.isStart() || newStatus.isSkip()) {
                             arbitrateManageService.channelEvent().start(channelId);
                         }
                     }
@@ -466,6 +466,9 @@ public class ChannelServiceImpl implements ChannelService {
         switchChannelStatus(channelId, null);
     }
 
+    public void skipChannel(Long channelId) {
+        switchChannelStatus(channelId, ChannelStatus.SKIP);
+    }
     /*----------------------DO <-> MODEL 组装方法--------------------------*/
     /**
      * <pre>

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.alibaba.otter.shared.common.model.config.channel.ChannelStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -416,6 +417,12 @@ public class NodeTaskServiceImpl implements NodeTaskService, InitializingBean {
      * 接受manager的channel变更事件
      */
     protected synchronized boolean onNotifyChannel(NotifyChannelEvent event) {
+        //忽略某个异常
+        Channel channel = event.getChannel();
+        if (channel.getStatus().isSkip()) {
+            configClientService.setSkip(true);
+            channel.setStatus(ChannelStatus.START);
+        }
         configClientService.createOrUpdateChannel(event.getChannel()); // 更新本地的config数据
         processNodeTask(event.getChannel());
         return notifyListener();

@@ -27,7 +27,10 @@ public enum ChannelStatus {
     /** 暂停(临时停止) */
     PAUSE,
     /** 停止(长时停止) */
-    STOP;
+    STOP,
+    /** 忽略一个异常 */
+    SKIP
+    ;
 
     public boolean isStart() {
         return this.equals(ChannelStatus.START);
@@ -39,5 +42,9 @@ public enum ChannelStatus {
 
     public boolean isStop() {
         return this.equals(ChannelStatus.STOP);
+    }
+
+    public boolean isSkip() {
+        return this.equals(ChannelStatus.SKIP);
     }
 }
