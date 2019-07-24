@@ -37,4 +37,6 @@ public interface SqlTemplate {
      */
     public String getMergeSql(String schemaName, String tableName, String[] pkNames, String[] columnNames,
                               String[] viewColumnNames, boolean updatePks, String shardColumn);
+
+    public String getSelectPageSql(String schemaName, String tableName, String pkName, String[] columnNames, long start, long limit);
 }

@@ -70,4 +70,10 @@ public interface ConfigClientService extends ArbitrateConfig {
      */
     public Pipeline findOppositePipeline(Long pipelineId);
 
+    public void updateDataMediaPair(Long pairId, boolean finish, String position);
+
+    public boolean isSkip();
+
+    public void setSkip(boolean skip);
+
 }

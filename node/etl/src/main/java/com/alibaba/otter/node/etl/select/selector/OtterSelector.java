@@ -69,4 +69,9 @@ public interface OtterSelector<T> {
      * 返回最后一次entry数据的时间戳
      */
     public Long lastEntryTime();
+
+    /**
+     * 用来初始化卡位
+     */
+    public Long setLastEntryTime(long time);
 }

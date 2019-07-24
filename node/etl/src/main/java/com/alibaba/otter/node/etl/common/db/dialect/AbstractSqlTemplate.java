@@ -123,4 +123,18 @@ public abstract class AbstractSqlTemplate implements SqlTemplate {
             }
         }
     }
+
+
+    @Override
+    public String getSelectPageSql(String schemaName, String tableName, String pkName, String[] columnNames, long start, long limit) {
+        StringBuilder sql = new StringBuilder("select ");
+        int size = columnNames.length;
+        for (int i = 0; i < size; i++) {
+            sql.append(appendEscape(columnNames[i])).append((i + 1 < size) ? " , " : "");
+        }
+
+        sql.append(" from ").append(getFullName(schemaName, tableName)).append(" order by "+ pkName);
+        sql.append(" limit "+start + ", " + limit);
+        return sql.toString().intern();// 不使用intern，避免方法区内存消耗过多
+    }
 }

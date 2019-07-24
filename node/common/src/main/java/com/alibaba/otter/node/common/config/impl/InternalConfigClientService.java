@@ -31,7 +31,4 @@ public interface InternalConfigClientService extends ConfigClientService {
      */
     public void createOrUpdateChannel(Channel channel);
 
-    public boolean isSkip();
-
-    public void setSkip(boolean skip);
 }

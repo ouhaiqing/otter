@@ -318,6 +318,11 @@ public class CanalEmbedSelector implements OtterSelector {
         return lastEntryTime;
     }
 
+    @Override
+    public Long setLastEntryTime(long time) {
+        return time;
+    }
+
     /**
      * 记录一下message对象
      */

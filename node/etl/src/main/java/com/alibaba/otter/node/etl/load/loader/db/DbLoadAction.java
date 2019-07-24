@@ -83,7 +83,7 @@ import com.alibaba.otter.shared.etl.model.RowBatch;
 
 /**
  * 数据库load的执行入口
- * 
+ *
  * @author jianghang 2011-10-31 下午03:17:43
  * @version 4.0.0
  */
@@ -169,7 +169,12 @@ public class DbLoadAction implements InitializingBean, DisposableBean {
             interceptor.error(context);
         } catch (Exception e) {
             interceptor.error(context);
-            throw new LoadException(e);
+            if (configClientService.isSkip()) {
+                configClientService.setSkip(false);
+                logger.warn("skip exception , caused by {}", ExceptionUtils.getFullStackTrace(e));
+            } else {
+                throw new LoadException(e);
+            }
         }
 
         return context;// 返回处理成功的记录
@@ -187,7 +192,7 @@ public class DbLoadAction implements InitializingBean, DisposableBean {
 
     /**
      * 分析整个数据，将datas划分为多个批次. ddl sql前的DML并发执行，然后串行执行ddl后，再并发执行DML
-     * 
+     *
      * @return
      */
     private boolean isDdlDatas(List<EventData> eventDatas) {
@@ -343,7 +348,7 @@ public class DbLoadAction implements InitializingBean, DisposableBean {
 
     /**
      * 执行ddl的调用，处理逻辑比较简单: 串行调用
-     * 
+     *
      * @param context
      * @param eventDatas
      */

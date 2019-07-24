@@ -221,4 +221,20 @@ public class ConfigClientServiceImpl implements InternalConfigClientService, Arb
         this.skip = skip;
     }
 
+    @Override
+    public void updateDataMediaPair(Long pairId, boolean finish, String position) {
+        /*UpdateMediaEvent event = new UpdateMediaEvent();
+        event.setPairId(pairId);
+        event.setFinish(finish);
+        event.setPosition(position);
+        try {
+            Object obj = nodeCommmunicationClient.callManager(event);
+            if (obj == null) {
+                throw new ConfigException("call manager return null!");
+            }
+        } catch (Exception e) {
+            logger.error("call_manager_error", event.toString(), e);
+        }*/
+    }
+
 }

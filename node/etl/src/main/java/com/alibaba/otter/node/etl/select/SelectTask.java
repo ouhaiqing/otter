@@ -25,7 +25,11 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.LockSupport;
 
+import com.alibaba.otter.node.common.config.ConfigClientService;
+import com.alibaba.otter.node.etl.common.db.dialect.DbDialectFactory;
 import com.alibaba.otter.node.etl.common.db.utils.SyncUtils;
+import com.alibaba.otter.node.etl.extract.extractor.DatabaseExtractor;
+import com.alibaba.otter.node.etl.load.loader.db.DbLoadAction;
 import com.alibaba.otter.shared.common.model.config.data.DataMediaPair;
 import com.alibaba.otter.shared.common.model.config.pipeline.Pipeline;
 import org.slf4j.MDC;
@@ -102,6 +106,7 @@ public class SelectTask extends GlobalTask {
     private StatisticsClientService    statisticsClientService;
     private OtterSelectorFactory       otterSelectorFactory;
     private OtterSelector<Message>     otterSelector;
+    protected DbDialectFactory dbDialectFactory;
     private ExecutorService            executor;
     private BlockingQueue<BatchTermin> batchBuffer      = new LinkedBlockingQueue<BatchTermin>(50); // 设置有界队列，避免小batch处理太多
     private boolean                    needCheck        = false;
@@ -171,30 +176,30 @@ public class SelectTask extends GlobalTask {
             return;
         }
 
-
-        // 全量数据同步
-        List<DataMediaPair> pairs = pipeline.getPairs();
-        for (DataMediaPair pair : pairs) {
-            if (pair.getUseInitialize() != null && pair.getUseInitialize().booleanValue()) {
-                if (pair.getEndInitialize() == null || !pair.getEndInitialize().booleanValue()) {
-
-                    //同步进行， 异步可能会造成数据库抽取数据压力过大， 从而失败
-                    SyncUtils.fullSyncData();
-                    /*if (pair.getTarget().getSource().getType().isIMPALA()) {
-                        HiveSyncUtils.fullSyncImpalaData(pair, databaseExtractor, shellTaskService, configClientService);
-                    } else {
-                        HiveSyncUtils.fullSyncData(pair, databaseExtractor, dbLoadAction, configClientService);
-                    }*/
-                }
-            }
-        }
-
         executor = Executors.newFixedThreadPool(2); // 启动两个线程
         // 启动selector
         otterSelector = otterSelectorFactory.getSelector(pipelineId); // 获取对应的selector
         otterSelector.start();
 
         canStartSelector.set(false);// 初始化为false
+
+        //初始化要保证数据的准确性， 需要确保otterSelector先卡住位点
+        /*Long lastTime = otterSelector.lastEntryTime();
+        if(lastTime==0L){
+            //otterSelector.setLastEntryTime(System.currentTimeMillis());
+        }*/
+        // 全量数据同步
+        List<DataMediaPair> pairs = pipeline.getPairs();
+        for (DataMediaPair pair : pairs) {
+            if (pair.getUseInitialize() != null && pair.getUseInitialize().booleanValue()) {
+                if (!pair.getEndInitialize().booleanValue()) {
+
+                    //同步进行， 异步可能会造成数据库抽取数据压力过大
+                    SyncUtils.fullSyncData(pair, configClientService, dbDialectFactory);
+                }
+            }
+        }
+
         startProcessTermin();
         startProcessSelect();
 
@@ -637,6 +642,10 @@ public class SelectTask extends GlobalTask {
 
     public void setStatisticsClientService(StatisticsClientService statisticsClientService) {
         this.statisticsClientService = statisticsClientService;
+    }
+
+    public void setDbDialectFactory(DbDialectFactory dbDialectFactory) {
+        this.dbDialectFactory = dbDialectFactory;
     }
 
 }
