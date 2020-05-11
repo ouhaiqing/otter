@@ -74,7 +74,7 @@ public class TransformTask extends GlobalTask {
                             // 后续可判断同步数据是否为rowData
                             List<PipeKey> keys = (List<PipeKey>) etlEventData.getDesc();
                             DbBatch dbBatch = rowDataPipeDelegate.get(keys);
-
+                            logger.warn("TransformTask dbBatch size：{}", dbBatch.getRowBatch().getDatas().size());
                             // 可能拿到为null，因为内存不足或者网络异常，长时间阻塞时，导致从pipe拿数据出现异常，数据可能被上一个节点已经删除
                             if (dbBatch == null) {
                                 processMissData(pipelineId, "transform miss data with keys:" + keys.toString());

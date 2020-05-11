@@ -139,7 +139,8 @@ public class DbLoadMerger {
                     EventData mergeEventData = replaceColumnValue(eventData, oldEventData);
                     result.put(rowKey, mergeEventData);
                 } else {
-                    throw new LoadException("delete(has old pks) + update impossible happed!");
+                    //throw new LoadException("delete(has old pks) + update impossible happed!");
+                    logger.error("delete(has old pks) + update impossible happed!");
                 }
             }
         } else {

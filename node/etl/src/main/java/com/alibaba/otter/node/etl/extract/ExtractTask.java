@@ -76,6 +76,7 @@ public class ExtractTask extends GlobalTask {
                                 return;
                             }
 
+                            logger.warn("ExtractTask dbBatch size：{}", dbBatch.getRowBatch().getDatas().size());
                             otterExtractorFactory.extract(dbBatch);// 重新装配一下数据
                             if (dbBatch.getFileBatch() != null
                                 && !CollectionUtils.isEmpty(dbBatch.getFileBatch().getFiles())

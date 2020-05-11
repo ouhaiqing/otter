@@ -35,16 +35,16 @@ import com.alibaba.otter.shared.etl.model.DbBatch;
 
 /**
  * load工作线程,负责桥接连接仲裁器,Config,loader
- * 
+ *
  * @author jianghang 2011-11-3 下午07:05:20
  * @version 4.0.0
  */
 public class LoadTask extends GlobalTask {
 
     private OtterLoaderFactory otterLoaderFactory;
-    private LoadInterceptor    dbLoadInterceptor;
+    private LoadInterceptor dbLoadInterceptor;
 
-    public LoadTask(Long pipelineId){
+    public LoadTask(Long pipelineId) {
         super(pipelineId);
     }
 
@@ -68,10 +68,12 @@ public class LoadTask extends GlobalTask {
                         Thread.currentThread().setName(createTaskName(pipelineId, "LoadWorker"));
                         List<LoadContext> processedContexts = null;
                         try {
+                            long l = System.currentTimeMillis();
                             // 后续可判断同步数据是否为rowData
                             List<PipeKey> keys = (List<PipeKey>) etlEventData.getDesc();
                             DbBatch dbBatch = rowDataPipeDelegate.get(keys);
 
+                            logger.warn("load dbBatch size：{}", dbBatch.getRowBatch().getDatas().size());
                             // 可能拿到为null，因为内存不足或者网络异常，长时间阻塞时，导致从pipe拿数据出现异常，数据可能被上一个节点已经删除
                             if (dbBatch == null) {
                                 processMissData(pipelineId, "load miss data with keys:" + keys.toString());
@@ -80,25 +82,25 @@ public class LoadTask extends GlobalTask {
 
                             // 进行数据load处理
                             otterLoaderFactory.setStartTime(dbBatch.getRowBatch().getIdentity(),
-                                                            etlEventData.getStartTime());
+                                    etlEventData.getStartTime());
 
                             processedContexts = otterLoaderFactory.load(dbBatch);
 
                             if (profiling) {
                                 Long profilingEndTime = System.currentTimeMillis();
                                 stageAggregationCollector.push(pipelineId,
-                                                               StageType.LOAD,
-                                                               new AggregationItem(profilingStartTime, profilingEndTime));
+                                        StageType.LOAD,
+                                        new AggregationItem(profilingStartTime, profilingEndTime));
                             }
                             // 处理完成后通知single已完成
                             arbitrateEventService.loadEvent().single(etlEventData);
                         } catch (Throwable e) {
                             if (!isInterrupt(e)) {
                                 logger.error(String.format("[%s] loadWork executor is error! data:%s", pipelineId,
-                                                           etlEventData), e);
+                                        etlEventData), e);
                             } else {
                                 logger.info(String.format("[%s] loadWork executor is interrrupt! data:%s", pipelineId,
-                                                          etlEventData), e);
+                                        etlEventData), e);
                             }
 
                             if (processedContexts != null) {// 说明load成功了，但是通知仲裁器失败了，需要记录下记录到store
@@ -110,7 +112,7 @@ public class LoadTask extends GlobalTask {
 
                                     } catch (Throwable ie) {
                                         logger.error(String.format("[%s] interceptor process error failed!", pipelineId),
-                                                     ie);
+                                                ie);
                                     }
                                 }
                             }
@@ -135,7 +137,7 @@ public class LoadTask extends GlobalTask {
 
                 // 构造pending任务，可在关闭线程时退出任务
                 SetlFuture extractFuture = new SetlFuture(StageType.LOAD, etlEventData.getProcessId(), pendingFuture,
-                                                          task);
+                        task);
                 executorService.execute(extractFuture);
             } catch (Throwable e) {
                 if (isInterrupt(e)) {

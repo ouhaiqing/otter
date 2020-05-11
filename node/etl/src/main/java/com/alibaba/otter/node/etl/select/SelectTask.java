@@ -289,6 +289,8 @@ public class SelectTask extends GlobalTask {
                     continue;
                 }
 
+                logger.warn("select size：{}", gotMessage.getDatas().size());
+
                 final EtlEventData etlEventData = arbitrateEventService.selectEvent().await(pipelineId);
                 if (rversion.get() != startVersion) {// 说明存在过变化，中间出现过rollback，需要丢弃该数据
                     logger.warn("rollback happend , should skip this data and get new message.");
