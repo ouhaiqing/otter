@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.dubbo.common.json.JSON;
 import org.I0Itec.zkclient.IZkConnection;
 import org.I0Itec.zkclient.exception.ZkException;
 import org.apache.commons.lang.StringUtils;
@@ -232,10 +233,18 @@ public class ArbitrateViewServiceImpl implements ArbitrateViewService {
             ZooKeeper orginZk = ((ZooKeeperx) connection).getZookeeper();
             Stat stat = new Stat();
             byte[] bytes = orginZk.getData(path, false, stat);
-            PositionEventData eventData = new PositionEventData();
+            /*PositionEventData eventData = new PositionEventData();
             eventData.setCreateTime(new Date(stat.getCtime()));
             eventData.setModifiedTime(new Date(stat.getMtime()));
-            eventData.setPosition(new String(bytes, "UTF-8"));
+            eventData.setPosition(new String(bytes, "UTF-8"));*/
+
+            final String position = new String(bytes, "UTF-8");
+            final Map<String, Object> data = JSON.parse(position, Map.class);
+            final Map<String, Object> postionMap = (Map<String, Object>) data.get("postion");
+            PositionEventData eventData = new PositionEventData();
+            eventData.setCreateTime(new Date(stat.getCtime()));
+            eventData.setModifiedTime(new Date((Long) (postionMap.get("timestamp"))));
+            eventData.setPosition(position);
             return eventData;
         } catch (Exception e) {
             return null;
