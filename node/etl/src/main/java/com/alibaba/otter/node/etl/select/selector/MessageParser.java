@@ -375,7 +375,7 @@ public class MessageParser {
                 }
 
                 boolean ddlSync = pipeline.getParameters().getDdlSync();
-                if (ddlSync) {
+                if (dataMedia!=null && ddlSync) {
                     // 处理下ddl操作
                     EventData eventData = new EventData();
                     eventData.setSchemaName(schemaName);

@@ -26,7 +26,7 @@ public interface ArbitrateConstants {
     /**
      * otter的根节点
      */
-    public String NODE_OTTER_ROOT         = "/otter";
+    public String NODE_OTTER_ROOT         = "/otter_4.2.18";
 
     /**
      * otter的node机器的根节点

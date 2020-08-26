@@ -58,7 +58,7 @@ import com.alibaba.otter.shared.common.utils.zookeeper.ZooKeeperx;
  */
 public class ArbitrateViewServiceImpl implements ArbitrateViewService {
 
-    private static final String CANAL_PATH        = "/otter/canal/destinations/%s";
+    private static final String CANAL_PATH        = ArbitrateConstants.NODE_OTTER_ROOT+"/canal/destinations/%s";
     private static final String CANAL_DATA_PATH   = CANAL_PATH + "/%s";
     private static final String CANAL_CURSOR_PATH = CANAL_PATH + "/%s/cursor";
     private ZkClientx           zookeeper         = ZooKeeperClient.getInstance();

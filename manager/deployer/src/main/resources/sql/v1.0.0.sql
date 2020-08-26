@@ -1,3 +1,8 @@
+/*初始化逻辑所用字段*/
+ALTER TABLE DATA_MEDIA_PAIR ADD INIT_USE boolean NOT NULL DEFAULT false COMMENT '是否初始化';
+ALTER TABLE DATA_MEDIA_PAIR ADD INIT_END boolean NOT NULL DEFAULT false COMMENT '初始化结束';
+ALTER TABLE DATA_MEDIA_PAIR ADD INIT_POS varchar(32) NULL COMMENT '初始化位置';
+
 /***此处功能用来同步所有删除数据到指定的表， 用来给maxcomputer同步*/
 CREATE TABLE `mc_filter_record` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
